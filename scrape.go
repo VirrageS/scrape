@@ -25,6 +25,21 @@ func Closest(node *html.Node, selector string) (*html.Node, bool) {
 	return nil, false
 }
 
+func Text(node *html.Node) string {
+	if node == nil {
+		return ""
+	}
+
+	result := ""
+	for c := node.FirstChild; c != nil; c = c.NextSibling {
+		if c.Type == html.TextNode {
+			result = result + string(c.Data)
+		}
+	}
+
+	return result
+}
+
 
 func findNodes(node *html.Node, selectors []string) []*html.Node {
 	matched := []*html.Node{}
@@ -57,7 +72,7 @@ func attr(node *html.Node, key string) string {
 }
 
 func checkTag(node *html.Node, tag string) bool {
-	return node.Data == tag
+	return (node.Data == tag) && (node.Type != html.TextNode)
 }
 
 func checkId(node *html.Node, id string) bool {

@@ -21,6 +21,7 @@ const testHTML = `
       </div>
     </div>
     <a href="">Link 2</a>
+    <div class="text"><a href="">Text<p>Text1</p></a>
   </body>
 </html>
 `
@@ -64,5 +65,15 @@ func TestFindComplexSelector(t *testing.T) {
 	items := Find(node, ".list .container .list .item")
 	if len(items) != 1 {
 		t.Error("Expected 1 node returned but found", len(items))
+	}
+}
+
+func TestText(t *testing.T) {
+	node, _ := html.Parse(strings.NewReader(testHTML))
+	link := Find(node, ".text a")
+
+	text := Text(link[0])
+	if text != "Text" {
+		t.Error("Expected `Text` text in node but found", text)
 	}
 }
