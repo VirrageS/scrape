@@ -45,32 +45,46 @@ func TestFind(t *testing.T) {
 	for _, test := range findtests {
 		find := Find(root, test.in)
 		if len(find) != test.out {
-			t.Errorf("Expected %d nodes for (%s) selector but found %d.", test.out, test.in, len(find))
+			t.Errorf("Expected %d nodes for '%s' selector but found %d.", test.out, test.in, len(find))
 		}
 	}
+}
+
+var closesttests = []struct {
+	find string
+	in   string
+	out  bool
+}{
+	{".item", ".list", true},
+	{".item", ".notfound", false},
 }
 
 func TestClosest(t *testing.T) {
 	root, _ := html.Parse(strings.NewReader(testHTML))
 
-	item := Find(root, ".item")[0]
-	_, ok := Closest(item, ".list")
-	if !ok {
-		t.Error("Expected list but nothing was found")
+	for _, test := range closesttests {
+		item := Find(root, test.find)[0]
+		_, ok := Closest(item, test.in)
+		if ok != test.out {
+			t.Errorf("Expected %t when searching closest '%s' starting from '%s' but found %t", test.out, test.in, test.find, ok)
+		}
 	}
+}
 
-	_, ok = Closest(item, ".notfound")
-	if ok {
-		t.Error("Expected empty node but something was found")
-	}
+var texttests = []struct {
+	in  string
+	out string
+}{
+	{".text a", "Text"},
 }
 
 func TestText(t *testing.T) {
 	root, _ := html.Parse(strings.NewReader(testHTML))
-	link := Find(root, ".text a")
 
-	text := Text(link[0])
-	if text != "Text" {
-		t.Error("Expected `Text` text in node but found", text)
+	for _, test := range texttests {
+		item := Find(root, test.in)[0]
+		if Text(item) != test.out {
+			t.Errorf("Expected '%s' as text in node '%s' but found '%s'.", test.out, test.in, Text(item))
+		}
 	}
 }
