@@ -13,7 +13,9 @@ const testHTML = `
     <div class="list">
       <div class="container">
         <ul class="list">
-         <li class="item"></li>
+         <li class="item">
+           <span id="super"></span>
+         </li>
          <li class="item2"></li>
         </ul>
         <div class="description"></div>
@@ -62,7 +64,7 @@ func TestFindComplexSelector(t *testing.T) {
 		t.Error("Expected 1 node returned but found", len(listAchnors))
 	}
 
-	items := Find(node, ".list .container .list .item")
+	items := Find(node, ".list .container ul #super")
 	if len(items) != 1 {
 		t.Error("Expected 1 node returned but found", len(items))
 	}

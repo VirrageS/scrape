@@ -25,6 +25,7 @@ func Closest(node *html.Node, selector string) (*html.Node, bool) {
 	return nil, false
 }
 
+// Text searches for text and concatenate all separated strings
 func Text(node *html.Node) string {
 	if node == nil {
 		return ""
