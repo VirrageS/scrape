@@ -31,14 +31,17 @@ func Text(node *html.Node) string {
 		return ""
 	}
 
-	result := ""
+	var texts []string
 	for c := node.FirstChild; c != nil; c = c.NextSibling {
 		if c.Type == html.TextNode {
-			result = result + string(c.Data)
+			trimmed := strings.TrimSpace(string(c.Data))
+			if trimmed != "" {
+				texts = append(texts, trimmed)
+			}
 		}
 	}
 
-	return result
+	return strings.Join(texts, " ")
 }
 
 // Attr returns the value of an HTML attribute.
