@@ -18,33 +18,42 @@ const testHTML = `
          </li>
          <li class="item2"></li>
         </ul>
-        <div class="description"></div>
+        <div class="description">div</div>
         <a href="">Link</a>
       </div>
     </div>
     <a href="">Link 2</a>
-    <div class="text"><a href="">Text<p>Text1</p></a>
+    <div class="text"><a href="">  Text  <p>Text1</p></a>
   </body>
 </html>
 `
 
-func TestFindNestedNodes(t *testing.T) {
-	node, _ := html.Parse(strings.NewReader(testHTML))
-	lists := Find(node, ".list")
+var findtests = []struct {
+	in  string
+	out int
+}{
+	{".list", 2},
+	{".list a", 1},
+	{".list .container ul #super", 1},
+	{"div", 4},
+	{"div div", 2},
+}
 
-	if len(lists) != 2 {
-		t.Error("Expected 2 nodes returned but only found", len(lists))
+func TestFind(t *testing.T) {
+	root, _ := html.Parse(strings.NewReader(testHTML))
+
+	for _, test := range findtests {
+		find := Find(root, test.in)
+		if len(find) != test.out {
+			t.Errorf("Expected %d nodes for (%s) selector but found %d.", test.out, test.in, len(find))
+		}
 	}
 }
 
 func TestClosest(t *testing.T) {
-	node, _ := html.Parse(strings.NewReader(testHTML))
-	items := Find(node, ".item")
-	if len(items) != 1 {
-		t.Error("Expected 1 node of `item` class but found", len(items))
-	}
+	root, _ := html.Parse(strings.NewReader(testHTML))
 
-	item := items[0]
+	item := Find(root, ".item")[0]
 	_, ok := Closest(item, ".list")
 	if !ok {
 		t.Error("Expected list but nothing was found")
@@ -56,23 +65,9 @@ func TestClosest(t *testing.T) {
 	}
 }
 
-func TestFindComplexSelector(t *testing.T) {
-	node, _ := html.Parse(strings.NewReader(testHTML))
-	listAchnors := Find(node, ".list a")
-
-	if len(listAchnors) != 1 {
-		t.Error("Expected 1 node returned but found", len(listAchnors))
-	}
-
-	items := Find(node, ".list .container ul #super")
-	if len(items) != 1 {
-		t.Error("Expected 1 node returned but found", len(items))
-	}
-}
-
 func TestText(t *testing.T) {
-	node, _ := html.Parse(strings.NewReader(testHTML))
-	link := Find(node, ".text a")
+	root, _ := html.Parse(strings.NewReader(testHTML))
+	link := Find(root, ".text a")
 
 	text := Text(link[0])
 	if text != "Text" {
