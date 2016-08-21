@@ -76,11 +76,11 @@ func checkTag(node *html.Node, tag string) bool {
 }
 
 func checkId(node *html.Node, id string) bool {
-	return attr(node, "id") == id
+	return Attr(node, "id") == id
 }
 
 func checkClass(node *html.Node, class string) bool {
-	classes := strings.Fields(attr(node, "class"))
+	classes := strings.Fields(Attr(node, "class"))
 	for _, c := range classes {
 		if c == class {
 			return true
