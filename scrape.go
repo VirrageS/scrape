@@ -41,6 +41,17 @@ func Text(node *html.Node) string {
 	return result
 }
 
+// Attr returns the value of an HTML attribute.
+func Attr(node *html.Node, key string) string {
+	for _, a := range node.Attr {
+		if a.Key == key {
+			return a.Val
+		}
+	}
+
+	return ""
+}
+
 
 func findNodes(node *html.Node, selectors []string) []*html.Node {
 	matched := []*html.Node{}
@@ -58,18 +69,6 @@ func findNodes(node *html.Node, selectors []string) []*html.Node {
 	}
 
 	return matched
-}
-
-
-// attr returns the value of an HTML attribute.
-func attr(node *html.Node, key string) string {
-	for _, a := range node.Attr {
-		if a.Key == key {
-			return a.Val
-		}
-	}
-
-	return ""
 }
 
 func checkTag(node *html.Node, tag string) bool {
