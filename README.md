@@ -33,7 +33,7 @@ func main() {
         // get name
         name := scrape.Text(link)
 
-        fmt.Printf("[REPO] name: %s; url: %s\n", url, name)
+        fmt.Printf("[REPO] name: %s; url: %s\n", name, url)
     }
 }
 ```
