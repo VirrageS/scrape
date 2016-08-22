@@ -76,6 +76,7 @@ var texttests = []struct {
 	out string
 }{
 	{".text a", "Text"},
+	{".text p", "Text1"},
 }
 
 func TestText(t *testing.T) {
