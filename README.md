@@ -16,12 +16,12 @@ import (
 func main() {
     response, err := http.Get("https://github.com/trending")
     if err != nil {
-        ...
+        return
     }
 
     root, err := html.Parse(response.Body)
     if err != nil {
-        ...
+        return
     }
 
     repos := scrape.Find(root, ".repo-list-item")
