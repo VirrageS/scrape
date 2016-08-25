@@ -55,9 +55,12 @@ func Attr(node *html.Node, key string) string {
 	return ""
 }
 
-
 func findNodes(node *html.Node, selectors []string) []*html.Node {
 	matched := []*html.Node{}
+
+	if (node == nil) {
+		return matched
+	}
 
 	for c := node.FirstChild; c != nil; c = c.NextSibling {
 		s, ok := matchSelectors(c, selectors)
