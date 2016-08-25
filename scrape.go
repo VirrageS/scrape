@@ -16,6 +16,10 @@ func Find(node *html.Node, selector string) []*html.Node {
 // Closest searches up HTML tree from the current node until either a
 // match is found or the top is hit.
 func Closest(node *html.Node, selector string) (*html.Node, bool) {
+	if node == nil {
+		return nil, false
+	}
+
 	for p := node.Parent; p != nil; p = p.Parent {
 		if matchSelector(p, selector) {
 			return p, true
@@ -46,6 +50,10 @@ func Text(node *html.Node) string {
 
 // Attr returns the value of an HTML attribute.
 func Attr(node *html.Node, key string) string {
+	if node == nil {
+		return ""
+	}
+
 	for _, a := range node.Attr {
 		if a.Key == key {
 			return a.Val

@@ -89,3 +89,25 @@ func TestText(t *testing.T) {
 		}
 	}
 }
+
+func TestNilNodes(t *testing.T) {
+	attr := Attr(nil, "something")
+	if attr != "" {
+		t.Errorf("Expected empty string but found %s", attr)
+	}
+
+	find := Find(nil, ".selector")
+	if len(find) != 0 {
+		t.Errorf("Expected empty node array but found %v", find)
+	}
+
+	_, ok := Closest(nil, ".selector")
+	if ok {
+		t.Errorf("Expected nothing to be found in Closest but something was found")
+	}
+
+	text := Text(nil)
+	if text != "" {
+		t.Errorf("Expected empty string for Text but found %s", text)
+	}
+}
