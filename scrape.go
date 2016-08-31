@@ -66,7 +66,7 @@ func Attr(node *html.Node, key string) string {
 func findNodes(node *html.Node, selectors []string) []*html.Node {
 	matched := []*html.Node{}
 
-	if (node == nil) {
+	if node == nil {
 		return matched
 	}
 
